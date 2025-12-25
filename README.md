@@ -25,10 +25,10 @@ The **Threat Plane** is a novel geometric framework that reconceptualizes organi
 
 This representation enables security teams to:
 
-- 🎯 **Identify emergent threat clusters** through spatial proximity
-- 🛤️ **Predict attack trajectories** using geodesic paths
-- 🕳️ **Quantify defensive coverage gaps** via topological voids
-- 🔗 **Discover hidden correlations** between disparate vulnerabilities
+-  **Identify emergent threat clusters** through spatial proximity
+-  **Predict attack trajectories** using geodesic paths
+-  **Quantify defensive coverage gaps** via topological voids
+-  **Discover hidden correlations** between disparate vulnerabilities
 
 > *"An adversary does not traverse a tree; they navigate a manifold."*
 
