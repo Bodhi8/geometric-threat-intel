@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Threat Plane | 3D Visualization</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
+      color: #e0e0e0;
+      overflow: hidden;
+      height: 100vh;
+    }
+    
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 32px;
+      background: linear-gradient(180deg, rgba(10,10,26,0.95) 0%, transparent 100%);
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 4px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    
+    .header h1 span { color: #ff6b6b; }
+    
+    .header p {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #6b6b8d;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 24px;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    
+    .stat { text-align: center; }
+    .stat-value { font-size: 24px; font-weight: 600; }
+    .stat-label { color: #6b6b8d; text-transform: uppercase; margin-top: 4px; }
+    .stat-critical .stat-value { color: #ff6b6b; }
+    .stat-high .stat-value { color: #ffe66d; }
+    .stat-medium .stat-value { color: #4ecdc4; }
+    .stat-low .stat-value { color: #95e1d3; }
+    
+    .panel {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10,10,26,0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 20px;
+      z-index: 10;
+      min-width: 200px;
+    }
+    
+    .panel-left { left: 24px; }
+    .panel-right { right: 24px; min-width: 180px; }
+    
+    .panel-title {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #6b6b8d;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    
+    .cluster-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-bottom: 4px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .cluster-item:hover, .cluster-item.active {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .cluster-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    .cluster-name { font-size: 12px; }
+    
+    .control-group {
+      margin-bottom: 16px;
+    }
+    
+    .control-group label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .control-group input[type="checkbox"] {
+      accent-color: #ff6b6b;
+    }
+    
+    .control-group input[type="range"] {
+      width: 100%;
+      accent-color: #ffe66d;
+      margin-top: 8px;
+    }
+    
+    .control-label {
+      font-size: 11px;
+      color: #6b6b8d;
+      margin-bottom: 8px;
+    }
+    
+    .panel-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin: 16px 0;
+    }
+    
+    .panel-stat {
+      font-size: 10px;
+      color: #6b6b8d;
+      margin-bottom: 8px;
+    }
+    
+    .panel-stat span { color: #fff; }
+    .panel-stat .highlight { color: #ff6b6b; }
+    
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 32px;
+      background: linear-gradient(0deg, rgba(10,10,26,0.95) 0%, transparent 100%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .footer-left, .footer-right {
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+    
+    .footer-left { color: #6b6b8d; }
+    .footer-right { color: #4ecdc4; }
+    
+    .equation-box {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10,10,26,0.7);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-family: 'Cambria Math', 'Times New Roman', serif;
+      font-style: italic;
+      color: #8b8bab;
+      z-index: 10;
+    }
+    
+    .tooltip {
+      position: absolute;
+      background: rgba(10,10,26,0.95);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 11px;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.2s;
+      max-width: 250px;
+    }
+    
+    .tooltip.visible { opacity: 1; }
+    .tooltip-title { color: #fff; font-weight: 500; margin-bottom: 6px; }
+    .tooltip-cluster { color: #6b6b8d; margin-bottom: 4px; }
+    .tooltip-type { font-size: 10px; color: #4ecdc4; }
+  </style>
+</head>
+<body>
+  <div id="canvas-container"></div>
+  
+  <div class="header">
+    <div>
+      <h1><span>◆</span> THREAT PLANE</h1>
+      <p>Geometric Risk Surface Visualization | Real-time Manifold Analysis</p>
+    </div>
+    <div class="stats">
+      <div class="stat stat-critical">
+        <div class="stat-value" id="stat-critical">--</div>
+        <div class="stat-label">Critical</div>
+      </div>
+      <div class="stat stat-high">
+        <div class="stat-value" id="stat-high">--</div>
+        <div class="stat-label">High</div>
+      </div>
+      <div class="stat stat-medium">
+        <div class="stat-value" id="stat-medium">--</div>
+        <div class="stat-label">Medium</div>
+      </div>
+      <div class="stat stat-low">
+        <div class="stat-value" id="stat-low">--</div>
+        <div class="stat-label">Low</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel panel-left">
+    <div class="panel-title">Threat Clusters</div>
+    <div id="cluster-list"></div>
+  </div>
+  
+  <div class="panel panel-right">
+    <div class="panel-title">Visualization Controls</div>
+    <div class="control-group">
+      <label>
+        <input type="checkbox" id="show-paths" checked>
+        Attack Paths
+      </label>
+    </div>
+    <div class="control-group">
+      <label>
+        <input type="checkbox" id="show-topology" checked>
+        Topology Overlay
+      </label>
+    </div>
+    <div class="control-group">
+      <div class="control-label">Animation Speed</div>
+      <input type="range" id="speed-slider" min="0" max="3" step="0.5" value="1">
+    </div>
+    <hr class="panel-divider">
+    <div class="panel-stat"><span id="node-count">--</span> nodes mapped</div>
+    <div class="panel-stat"><span class="highlight" id="path-count">--</span> attack vectors</div>
+  </div>
+  
+  <div class="footer">
+    <div class="footer-left">
+      PROJECTION: UMAP-3D | METRIC: SECURITY-WEIGHTED EUCLIDEAN | GNN: 4-LAYER HETEROGENEOUS GAT
+    </div>
+    <div class="footer-right">
+      ◉ MANIFOLD STABLE | TOPOLOGY: H₀=6 H₁=3 H₂=1
+    </div>
+  </div>
+  
+  <div class="equation-box">
+    π: M ⊂ ℝⁿ → T ⊂ ℝ³ | d_T(π(x), π(y)) ≈ d_M(x, y)
+  </div>
+  
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-title"></div>
+    <div class="tooltip-cluster"></div>
+    <div class="tooltip-type"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Threat Plane 3D Visualization
+    
+    // Data generation
+    const clusters = [
+      { name: 'Network Infrastructure', color: 0xff6b6b, center: [-2, 0, -1], risk: 'critical' },
+      { name: 'Identity & Access', color: 0x4ecdc4, center: [2, 1, 0], risk: 'high' },
+      { name: 'Application Layer', color: 0xffe66d, center: [0, -1.5, 2], risk: 'medium' },
+      { name: 'Data Stores', color: 0x95e1d3, center: [-1, 2, 1], risk: 'high' },
+      { name: 'Endpoint Systems', color: 0xdda0dd, center: [1.5, -0.5, -2], risk: 'critical' },
+      { name: 'Cloud Services', color: 0x87ceeb, center: [0, 0.5, 0], risk: 'medium' }
+    ];
+    
+    const seededRandom = (seed) => {
+      const x = Math.sin(seed) * 10000;
+      return x - Math.floor(x);
+    };
+    
+    const nodes = [];
+    clusters.forEach((cluster, ci) => {
+      const nodeCount = 15 + Math.floor(seededRandom(ci * 100) * 20);
+      for (let i = 0; i < nodeCount; i++) {
+        const seed = ci * 1000 + i;
+        const radius = 0.8 + seededRandom(seed) * 0.8;
+        const theta = seededRandom(seed + 1) * Math.PI * 2;
+        const phi = seededRandom(seed + 2) * Math.PI;
+        
+        nodes.push({
+          id: `node-${ci}-${i}`,
+          cluster: ci,
+          clusterName: cluster.name,
+          color: cluster.color,
+          x: cluster.center[0] + radius * Math.sin(phi) * Math.cos(theta),
+          y: cluster.center[1] + radius * Math.sin(phi) * Math.sin(theta),
+          z: cluster.center[2] + radius * Math.cos(phi),
+          size: 0.04 + seededRandom(seed + 3) * 0.06,
+          severity: seededRandom(seed + 4),
+          type: ['Asset', 'Vulnerability', 'Threat Actor', 'Control'][Math.floor(seededRandom(seed + 5) * 4)],
+          name: `${cluster.name.split(' ')[0]}-${['CVE', 'ASSET', 'CTRL', 'THR'][Math.floor(seededRandom(seed + 6) * 4)]}-${Math.floor(seededRandom(seed + 7) * 9999)}`
+        });
+      }
+    });
+    
+    // Attack paths
+    const attackPaths = [];
+    const pathPairs = [[0, 4], [4, 1], [1, 3], [2, 5], [5, 0], [3, 2], [0, 1], [4, 3]];
+    pathPairs.forEach(([from, to], idx) => {
+      const fromNodes = nodes.filter(n => n.cluster === from);
+      const toNodes = nodes.filter(n => n.cluster === to);
+      if (fromNodes.length && toNodes.length) {
+        const startNode = fromNodes[Math.floor(seededRandom(idx * 50) * fromNodes.length)];
+        const endNode = toNodes[Math.floor(seededRandom(idx * 51) * toNodes.length)];
+        attackPaths.push({ from: startNode, to: endNode });
+      }
+    });
+    
+    // Update stats
+    const critical = nodes.filter(n => n.severity > 0.8).length;
+    const high = nodes.filter(n => n.severity > 0.6 && n.severity <= 0.8).length;
+    const medium = nodes.filter(n => n.severity > 0.4 && n.severity <= 0.6).length;
+    const low = nodes.filter(n => n.severity <= 0.4).length;
+    
+    document.getElementById('stat-critical').textContent = critical;
+    document.getElementById('stat-high').textContent = high;
+    document.getElementById('stat-medium').textContent = medium;
+    document.getElementById('stat-low').textContent = low;
+    document.getElementById('node-count').textContent = nodes.length;
+    document.getElementById('path-count').textContent = attackPaths.length;
+    
+    // Populate cluster list
+    const clusterList = document.getElementById('cluster-list');
+    const allItem = document.createElement('div');
+    allItem.className = 'cluster-item active';
+    allItem.dataset.cluster = 'all';
+    allItem.innerHTML = `
+      <div class="cluster-dot" style="background: linear-gradient(135deg, #ff6b6b, #4ecdc4);"></div>
+      <span class="cluster-name">All Clusters</span>
+    `;
+    clusterList.appendChild(allItem);
+    
+    clusters.forEach((cluster, i) => {
+      const item = document.createElement('div');
+      item.className = 'cluster-item';
+      item.dataset.cluster = i;
+      item.innerHTML = `
+        <div class="cluster-dot" style="background: #${cluster.color.toString(16).padStart(6, '0')}; box-shadow: 0 0 10px #${cluster.color.toString(16).padStart(6, '0')}40;"></div>
+        <span class="cluster-name">${cluster.name}</span>
+      `;
+      clusterList.appendChild(item);
+    });
+    
+    // Three.js setup
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(5, 3, 5);
+    camera.lookAt(0, 0, 0);
+    
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x0a0a1a, 1);
+    container.appendChild(renderer.domElement);
+    
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0x404060, 0.5);
+    scene.add(ambientLight);
+    
+    const pointLight1 = new THREE.PointLight(0xff6b6b, 1, 20);
+    pointLight1.position.set(5, 5, 5);
+    scene.add(pointLight1);
+    
+    const pointLight2 = new THREE.PointLight(0x4ecdc4, 0.8, 20);
+    pointLight2.position.set(-5, 3, -5);
+    scene.add(pointLight2);
+    
+    // Grid
+    const gridHelper = new THREE.GridHelper(8, 20, 0x1a1a3e, 0x1a1a3e);
+    gridHelper.position.y = -2.5;
+    scene.add(gridHelper);
+    
+    // Create node meshes
+    const nodeGeometry = new THREE.SphereGeometry(1, 16, 16);
+    const nodeMeshes = [];
+    
+    nodes.forEach(node => {
+      const material = new THREE.MeshPhongMaterial({
+        color: node.color,
+        emissive: node.color,
+        emissiveIntensity: 0.3,
+        transparent: true,
+        opacity: 0.85
+      });
+      
+      const mesh = new THREE.Mesh(nodeGeometry, material);
+      mesh.position.set(node.x, node.y, node.z);
+      mesh.scale.setScalar(node.size);
+      mesh.userData = node;
+      scene.add(mesh);
+      nodeMeshes.push(mesh);
+    });
+    
+    // Create attack paths
+    const pathLines = [];
+    attackPaths.forEach(path => {
+      const curve = new THREE.QuadraticBezierCurve3(
+        new THREE.Vector3(path.from.x, path.from.y, path.from.z),
+        new THREE.Vector3(
+          (path.from.x + path.to.x) / 2 + (seededRandom(path.from.x * 100) - 0.5) * 0.5,
+          Math.max(path.from.y, path.to.y) + 0.5,
+          (path.from.z + path.to.z) / 2 + (seededRandom(path.to.z * 100) - 0.5) * 0.5
+        ),
+        new THREE.Vector3(path.to.x, path.to.y, path.to.z)
+      );
+      
+      const points = curve.getPoints(50);
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const material = new THREE.LineBasicMaterial({
+        color: 0xff4444,
+        transparent: true,
+        opacity: 0.4
+      });
+      
+      const line = new THREE.Line(geometry, material);
+      scene.add(line);
+      pathLines.push(line);
+    });
+    
+    // State
+    let selectedCluster = 'all';
+    let showPaths = true;
+    let animationSpeed = 1;
+    let time = 0;
+    let mouseX = 0, mouseY = 0;
+    let rotationY = 0;
+    
+    // Event listeners
+    document.querySelectorAll('.cluster-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.cluster-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        selectedCluster = item.dataset.cluster;
+        updateVisibility();
+      });
+    });
+    
+    document.getElementById('show-paths').addEventListener('change', (e) => {
+      showPaths = e.target.checked;
+      pathLines.forEach(line => line.visible = showPaths);
+    });
+    
+    document.getElementById('speed-slider').addEventListener('input', (e) => {
+      animationSpeed = parseFloat(e.target.value);
+    });
+    
+    container.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+    
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    
+    function updateVisibility() {
+      nodeMeshes.forEach(mesh => {
+        const visible = selectedCluster === 'all' || mesh.userData.cluster === parseInt(selectedCluster);
+        mesh.visible = visible;
+        mesh.material.opacity = visible ? 0.85 : 0.1;
+      });
+    }
+    
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+      time += 0.01 * animationSpeed;
+      
+      // Rotate scene
+      rotationY += 0.002 * animationSpeed;
+      scene.rotation.y = rotationY + mouseX * 0.5;
+      scene.rotation.x = 0.3 + mouseY * 0.3;
+      
+      // Animate nodes
+      nodeMeshes.forEach((mesh, i) => {
+        const node = mesh.userData;
+        const pulse = Math.sin(time * 2 + i * 0.5) * 0.1 + 1;
+        mesh.scale.setScalar(node.size * pulse);
+        mesh.position.y = node.y + Math.sin(time + i) * 0.02;
+      });
+      
+      renderer.render(scene, camera);
+    }
+    
+    animate();
+  </script>
+</body>
+</html>
