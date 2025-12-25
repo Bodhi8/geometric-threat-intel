@@ -25,10 +25,10 @@ The **Threat Plane** is a novel geometric framework that reconceptualizes organi
 
 This representation enables security teams to:
 
--  **Identify emergent threat clusters** through spatial proximity
--  **Predict attack trajectories** using geodesic paths
--  **Quantify defensive coverage gaps** via topological voids
--  **Discover hidden correlations** between disparate vulnerabilities
+- 🎯 **Identify emergent threat clusters** through spatial proximity
+- 🛤️ **Predict attack trajectories** using geodesic paths
+- 🕳️ **Quantify defensive coverage gaps** via topological voids
+- 🔗 **Discover hidden correlations** between disparate vulnerabilities
 
 > *"An adversary does not traverse a tree; they navigate a manifold."*
 
@@ -88,13 +88,13 @@ A heterogeneous graph integrating:
 
 ### Interactive 3D Visualization
 
-> **[▶️ View Interactive Demo](https://yourusername.github.io/threat-plane/visualizations/interactive-demo.html)** *(deploy to GitHub Pages to enable)*
+> **[▶️ View Interactive Demo](https://bodhi8.github.io/geometric-threat-intel/visualizations/interactive-demo.html)** *(enable GitHub Pages in repo Settings)*
 
 To run the demo locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Bodhi8/threat-plane.git
+git clone https://github.com/Bodhi8/geometric-threat-intel.git
 cd threat-plane
 
 # Option 1: Open directly in browser
@@ -118,7 +118,7 @@ To host the live demo:
 
 1. Go to your repo **Settings** → **Pages**
 2. Set Source to **main branch** and folder to **/ (root)**
-3. Your demo will be live at: `https://yourusername.github.io/threat-plane/visualizations/interactive-demo.html`
+3. Your demo will be live at: `https://bodhi8.github.io/geometric-threat-intel/visualizations/interactive-demo.html`
 
 ## Getting Started
 
@@ -138,7 +138,7 @@ docker run -p 7474:7474 -p 7687:7687 neo4j:latest
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/threat-plane.git
+git clone https://github.com/Bodhi8/geometric-threat-intel.git
 cd threat-plane
 
 # Install in development mode
@@ -243,10 +243,10 @@ If you use this work in your research, please cite:
 ```bibtex
 @article{threatplane2025,
   title={The Threat Plane: A Geometric Framework for Modeling and Visualizing Organizational Cyber Risk},
-  author={Your Name},
+  author={Bodhi8},
   journal={Medium},
   year={2025},
-  url={https://medium.com/@yourusername/the-threat-plane}
+  url={https://medium.com/@Bodhi8/the-threat-plane}
 }
 ```
 

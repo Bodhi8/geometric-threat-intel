@@ -64,10 +64,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/threat-plane"
-Documentation = "https://github.com/yourusername/threat-plane#readme"
-Repository = "https://github.com/yourusername/threat-plane"
-Issues = "https://github.com/yourusername/threat-plane/issues"
+Homepage = "https://github.com/Bodhi8/geometric-threat-intel"
+Documentation = "https://github.com/Bodhi8/geometric-threat-intel#readme"
+Repository = "https://github.com/Bodhi8/geometric-threat-intel"
+Issues = "https://github.com/Bodhi8/geometric-threat-intel/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
