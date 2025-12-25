@@ -94,7 +94,7 @@ To run the demo locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/threat-plane.git
+git clone https://github.com/Bodhi8/threat-plane.git
 cd threat-plane
 
 # Option 1: Open directly in browser
