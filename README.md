@@ -1,7 +1,7 @@
 # The Threat Plane
 
 <p align="center">
-  <img src="assets/threat-plane-banner.png" alt="The Threat Plane" width="800">
+  <img src="assets/threat-plane-diagram.svg" alt="The Threat Plane" width="900">
 </p>
 
 <p align="center">
@@ -60,7 +60,7 @@ A heterogeneous graph integrating:
 ## Methodology
 
 <p align="center">
-  <img src="assets/methodology-pipeline.png" alt="Methodology Pipeline" width="900">
+  <img src="assets/threat-plane-architecture.svg" alt="Methodology Pipeline" width="900">
 </p>
 
 ### 8-Phase Pipeline
@@ -88,32 +88,37 @@ A heterogeneous graph integrating:
 
 ### Interactive 3D Visualization
 
-**[▶️ Launch Live Demo](https://yourusername.github.io/threat-plane/)**
+> **[▶️ View Interactive Demo](https://yourusername.github.io/threat-plane/visualizations/interactive-demo.html)** *(deploy to GitHub Pages to enable)*
 
-<p align="center">
-  <img src="assets/demo-screenshot.png" alt="Interactive Demo" width="700">
-</p>
-
-Features:
-- Real-time 3D threat landscape navigation
-- Cluster filtering and highlighting  
-- Attack path visualization
-- Topology overlay controls
-- Severity-based node sizing
-
-### Run Locally
+To run the demo locally:
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/threat-plane.git
 cd threat-plane
 
-# Open the visualization
+# Option 1: Open directly in browser
 open visualizations/interactive-demo.html
-# or
+
+# Option 2: Serve with Python (for full functionality)
 python -m http.server 8000
-# then visit http://localhost:8000/visualizations/interactive-demo.html
+# Then visit: http://localhost:8000/visualizations/interactive-demo.html
 ```
+
+**Demo Features:**
+- Real-time 3D threat landscape navigation
+- Cluster filtering and highlighting  
+- Attack path visualization
+- Topology overlay controls
+- Severity-based node sizing
+
+### Deploy to GitHub Pages
+
+To host the live demo:
+
+1. Go to your repo **Settings** → **Pages**
+2. Set Source to **main branch** and folder to **/ (root)**
+3. Your demo will be live at: `https://yourusername.github.io/threat-plane/visualizations/interactive-demo.html`
 
 ## Getting Started
 
@@ -125,8 +130,22 @@ For the full pipeline implementation:
 # Python dependencies
 pip install torch torch-geometric networkx umap-learn scikit-learn gudhi plotly
 
-# Graph database
+# Graph database (optional)
 docker run -p 7474:7474 -p 7687:7687 neo4j:latest
+```
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/threat-plane.git
+cd threat-plane
+
+# Install in development mode
+pip install -e .
+
+# Or with all dependencies
+pip install -e ".[full]"
 ```
 
 ### Quick Start
@@ -156,6 +175,13 @@ trajectories = tp.predict_trajectories(start_node="compromised_host")
 clusters = tp.cluster_threats(method="hdbscan")
 ```
 
+### Run the Example
+
+```bash
+cd src/examples
+python basic_usage.py
+```
+
 ### Example: Analyzing a Threat Cluster
 
 ```python
@@ -177,31 +203,27 @@ for path in paths[:5]:
 threat-plane/
 ├── README.md
 ├── LICENSE
+├── CONTRIBUTING.md
+├── pyproject.toml
 ├── docs/
-│   ├── article.md              # Full research article
-│   ├── methodology.md          # Detailed methodology
-│   └── api-reference.md        # API documentation
+│   └── article.md              # Full research article
 ├── src/
 │   ├── threat_plane/
-│   │   ├── __init__.py
+│   │   ├── __init__.py         # Main ThreatPlane class
 │   │   ├── graph.py            # Security Knowledge Graph
 │   │   ├── embedding.py        # GNN embeddings
 │   │   ├── projection.py       # Dimensionality reduction
 │   │   ├── topology.py         # Topological analysis
 │   │   └── visualization.py    # 3D rendering
 │   └── examples/
-│       ├── basic_usage.py
-│       └── enterprise_demo.py
+│       └── basic_usage.py      # Working demo script
 ├── visualizations/
-│   ├── interactive-demo.html   # Standalone 3D demo
+│   ├── interactive-demo.html   # Standalone 3D visualization
 │   └── components/
 │       └── ThreatPlane.jsx     # React component
-├── assets/
-│   ├── threat-plane-banner.png
-│   ├── methodology-pipeline.png
-│   └── demo-screenshot.png
-└── data/
-    └── sample/                 # Sample datasets
+└── assets/
+    ├── threat-plane-diagram.svg
+    └── threat-plane-architecture.svg
 ```
 
 ## Research Applications

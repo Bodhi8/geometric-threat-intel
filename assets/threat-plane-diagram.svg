@@ -1,0 +1,238 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="50%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    
+    <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a4e;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#1a1a3e;stop-opacity:0.3"/>
+    </linearGradient>
+    
+    <radialGradient id="nodeRed" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ff8888"/>
+      <stop offset="100%" style="stop-color:#ff4444"/>
+    </radialGradient>
+    
+    <radialGradient id="nodeTeal" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#6eeede"/>
+      <stop offset="100%" style="stop-color:#4ecdc4"/>
+    </radialGradient>
+    
+    <radialGradient id="nodeYellow" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#fff088"/>
+      <stop offset="100%" style="stop-color:#ffe66d"/>
+    </radialGradient>
+    
+    <radialGradient id="nodePurple" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#e8b8e8"/>
+      <stop offset="100%" style="stop-color:#dda0dd"/>
+    </radialGradient>
+    
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#bgGrad)"/>
+  
+  <!-- Grid pattern for depth -->
+  <g opacity="0.15">
+    <line x1="200" y1="650" x2="600" y2="400" stroke="#4a4a6a" stroke-width="0.5"/>
+    <line x1="300" y1="650" x2="700" y2="400" stroke="#4a4a6a" stroke-width="0.5"/>
+    <line x1="400" y1="650" x2="800" y2="400" stroke="#4a4a6a" stroke-width="0.5"/>
+    <line x1="500" y1="650" x2="900" y2="400" stroke="#4a4a6a" stroke-width="0.5"/>
+    <line x1="600" y1="650" x2="1000" y2="400" stroke="#4a4a6a" stroke-width="0.5"/>
+    
+    <line x1="200" y1="650" x2="400" y2="350" stroke="#4a4a6a" stroke-width="0.5"/>
+    <line x1="300" y1="580" x2="500" y2="350" stroke="#4a4a6a" stroke-width="0.5"/>
+    <line x1="400" y1="510" x2="600" y2="350" stroke="#4a4a6a" stroke-width="0.5"/>
+    <line x1="500" y1="440" x2="700" y2="350" stroke="#4a4a6a" stroke-width="0.5"/>
+  </g>
+  
+  <!-- 3D Plane surface -->
+  <polygon points="100,550 550,300 1100,380 650,650" fill="url(#planeGrad)" stroke="#3a3a5e" stroke-width="1"/>
+  
+  <!-- Coordinate axes -->
+  <g opacity="0.6">
+    <!-- X axis -->
+    <line x1="100" y1="550" x2="650" y2="650" stroke="#ff6b6b" stroke-width="2"/>
+    <polygon points="650,650 630,645 630,655" fill="#ff6b6b"/>
+    <text x="670" y="660" fill="#ff6b6b" font-family="JetBrains Mono, monospace" font-size="14">X</text>
+    
+    <!-- Y axis -->
+    <line x1="100" y1="550" x2="100" y2="250" stroke="#4ecdc4" stroke-width="2"/>
+    <polygon points="100,250 95,270 105,270" fill="#4ecdc4"/>
+    <text x="85" y="240" fill="#4ecdc4" font-family="JetBrains Mono, monospace" font-size="14">Y</text>
+    
+    <!-- Z axis -->
+    <line x1="100" y1="550" x2="550" y2="300" stroke="#ffe66d" stroke-width="2"/>
+    <polygon points="550,300 535,315 545,320" fill="#ffe66d"/>
+    <text x="560" y="290" fill="#ffe66d" font-family="JetBrains Mono, monospace" font-size="14">Z</text>
+  </g>
+  
+  <!-- Threat Cluster 1 - Network Infrastructure (Red) -->
+  <g filter="url(#glow)">
+    <circle cx="280" cy="450" r="18" fill="url(#nodeRed)"/>
+    <circle cx="320" cy="420" r="12" fill="url(#nodeRed)"/>
+    <circle cx="260" cy="410" r="14" fill="url(#nodeRed)"/>
+    <circle cx="300" cy="480" r="10" fill="url(#nodeRed)"/>
+    <circle cx="340" cy="460" r="8" fill="url(#nodeRed)"/>
+  </g>
+  
+  <!-- Threat Cluster 2 - Identity & Access (Teal) -->
+  <g filter="url(#glow)">
+    <circle cx="550" cy="380" r="16" fill="url(#nodeTeal)"/>
+    <circle cx="580" cy="350" r="12" fill="url(#nodeTeal)"/>
+    <circle cx="520" cy="360" r="10" fill="url(#nodeTeal)"/>
+    <circle cx="560" cy="410" r="14" fill="url(#nodeTeal)"/>
+    <circle cx="600" cy="390" r="8" fill="url(#nodeTeal)"/>
+  </g>
+  
+  <!-- Threat Cluster 3 - Application Layer (Yellow) -->
+  <g filter="url(#glow)">
+    <circle cx="420" cy="520" r="15" fill="url(#nodeYellow)"/>
+    <circle cx="450" cy="490" r="11" fill="url(#nodeYellow)"/>
+    <circle cx="390" cy="500" r="9" fill="url(#nodeYellow)"/>
+    <circle cx="460" cy="540" r="13" fill="url(#nodeYellow)"/>
+  </g>
+  
+  <!-- Threat Cluster 4 - Endpoint Systems (Purple) -->
+  <g filter="url(#glow)">
+    <circle cx="720" cy="450" r="14" fill="url(#nodePurple)"/>
+    <circle cx="750" cy="420" r="10" fill="url(#nodePurple)"/>
+    <circle cx="690" cy="430" r="12" fill="url(#nodePurple)"/>
+    <circle cx="760" cy="470" r="8" fill="url(#nodePurple)"/>
+  </g>
+  
+  <!-- Attack Paths -->
+  <g opacity="0.7">
+    <!-- Path 1: Red to Teal -->
+    <path d="M 320 420 Q 400 350 550 380" stroke="#ff4444" stroke-width="2" fill="none" stroke-dasharray="8,4">
+      <animate attributeName="stroke-dashoffset" from="24" to="0" dur="2s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Path 2: Teal to Purple -->
+    <path d="M 600 390 Q 660 400 720 450" stroke="#4ecdc4" stroke-width="2" fill="none" stroke-dasharray="8,4">
+      <animate attributeName="stroke-dashoffset" from="24" to="0" dur="2s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Path 3: Yellow to Red -->
+    <path d="M 390 500 Q 320 480 280 450" stroke="#ffe66d" stroke-width="2" fill="none" stroke-dasharray="8,4">
+      <animate attributeName="stroke-dashoffset" from="24" to="0" dur="2s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Path 4: Yellow to Teal -->
+    <path d="M 460 490 Q 500 430 550 380" stroke="#95e1d3" stroke-width="2" fill="none" stroke-dasharray="8,4">
+      <animate attributeName="stroke-dashoffset" from="24" to="0" dur="2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Topological Features Overlay -->
+  <g opacity="0.25">
+    <!-- H0: Connected component boundary -->
+    <ellipse cx="300" cy="440" rx="80" ry="60" fill="none" stroke="#ff6b6b" stroke-width="1" stroke-dasharray="4,4"/>
+    <ellipse cx="560" cy="380" rx="70" ry="50" fill="none" stroke="#4ecdc4" stroke-width="1" stroke-dasharray="4,4"/>
+    
+    <!-- H1: Loop indicator -->
+    <path d="M 350 450 Q 450 400 500 420 Q 450 480 350 450" fill="none" stroke="#ffe66d" stroke-width="1.5" opacity="0.5"/>
+  </g>
+  
+  <!-- Title and Labels -->
+  <text x="60" y="60" fill="#ffffff" font-family="Georgia, serif" font-size="36" font-weight="300" letter-spacing="4">
+    THE THREAT PLANE
+  </text>
+  <text x="60" y="90" fill="#6b6b8d" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="2">
+    GEOMETRIC THREAT SURFACE VISUALIZATION
+  </text>
+  
+  <!-- Legend -->
+  <g transform="translate(900, 120)">
+    <rect x="0" y="0" width="250" height="280" fill="rgba(10,10,26,0.8)" rx="8" stroke="rgba(255,255,255,0.1)"/>
+    
+    <text x="20" y="30" fill="#6b6b8d" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">THREAT CLUSTERS</text>
+    
+    <circle cx="30" cy="60" r="8" fill="url(#nodeRed)"/>
+    <text x="50" y="64" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="11">Network Infrastructure</text>
+    
+    <circle cx="30" cy="90" r="8" fill="url(#nodeTeal)"/>
+    <text x="50" y="94" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="11">Identity &amp; Access</text>
+    
+    <circle cx="30" cy="120" r="8" fill="url(#nodeYellow)"/>
+    <text x="50" y="124" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="11">Application Layer</text>
+    
+    <circle cx="30" cy="150" r="8" fill="url(#nodePurple)"/>
+    <text x="50" y="154" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="11">Endpoint Systems</text>
+    
+    <line x1="20" y1="175" x2="230" y2="175" stroke="rgba(255,255,255,0.1)"/>
+    
+    <text x="20" y="200" fill="#6b6b8d" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">TOPOLOGY</text>
+    
+    <text x="30" y="225" fill="#ff6b6b" font-family="JetBrains Mono, monospace" font-size="11">H₀</text>
+    <text x="55" y="225" fill="#8b8bab" font-family="JetBrains Mono, monospace" font-size="11">Connected Components</text>
+    
+    <text x="30" y="250" fill="#ffe66d" font-family="JetBrains Mono, monospace" font-size="11">H₁</text>
+    <text x="55" y="250" fill="#8b8bab" font-family="JetBrains Mono, monospace" font-size="11">Attack Loops</text>
+    
+    <text x="30" y="275" fill="#4ecdc4" font-family="JetBrains Mono, monospace" font-size="11">→</text>
+    <text x="55" y="275" fill="#8b8bab" font-family="JetBrains Mono, monospace" font-size="11">Attack Trajectories</text>
+  </g>
+  
+  <!-- Equation Box -->
+  <g transform="translate(900, 450)">
+    <rect x="0" y="0" width="250" height="100" fill="rgba(10,10,26,0.8)" rx="8" stroke="rgba(255,255,255,0.1)"/>
+    <text x="20" y="30" fill="#6b6b8d" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">PROJECTION CONSTRAINT</text>
+    <text x="20" y="60" fill="#e0e0e0" font-family="Cambria Math, Georgia, serif" font-size="14" font-style="italic">
+      π: M ⊂ ℝⁿ → T ⊂ ℝ³
+    </text>
+    <text x="20" y="85" fill="#8b8bab" font-family="Cambria Math, Georgia, serif" font-size="12" font-style="italic">
+      d_T(π(x), π(y)) ≈ d_M(x, y)
+    </text>
+  </g>
+  
+  <!-- Methods Box -->
+  <g transform="translate(900, 580)">
+    <rect x="0" y="0" width="250" height="120" fill="rgba(10,10,26,0.8)" rx="8" stroke="rgba(255,255,255,0.1)"/>
+    <text x="20" y="28" fill="#6b6b8d" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">METHODOLOGIES</text>
+    <text x="20" y="52" fill="#4ecdc4" font-family="JetBrains Mono, monospace" font-size="10">■</text>
+    <text x="35" y="52" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="10">Graph Neural Networks</text>
+    <text x="20" y="72" fill="#ff6b6b" font-family="JetBrains Mono, monospace" font-size="10">■</text>
+    <text x="35" y="72" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="10">Persistent Homology</text>
+    <text x="20" y="92" fill="#ffe66d" font-family="JetBrains Mono, monospace" font-size="10">■</text>
+    <text x="35" y="92" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="10">UMAP / t-SNE / PaCMAP</text>
+    <text x="20" y="112" fill="#dda0dd" font-family="JetBrains Mono, monospace" font-size="10">■</text>
+    <text x="35" y="112" fill="#e0e0e0" font-family="JetBrains Mono, monospace" font-size="10">Anomaly Detection (LOF)</text>
+  </g>
+  
+  <!-- Floating decorative elements -->
+  <g opacity="0.3">
+    <circle cx="150" cy="180" r="2" fill="#ff6b6b">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="220" r="1.5" fill="#4ecdc4">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="180" cy="280" r="2" fill="#ffe66d">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="820" cy="280" r="1.5" fill="#dda0dd">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
